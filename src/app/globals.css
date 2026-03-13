@@ -1,26 +1,57 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* env vars */
+/* :root {
+} */
+
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Spinner wrapper */
+.spinner {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  width: var(--sp-size);
+  height: var(--sp-size);
+  transform: translate(-50%, -50%);
+  z-index: 9999;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Base ring */
+.spinner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: var(--sp-thickness) solid var(--sp-ring);
+  opacity: 0.25;
+  box-sizing: border-box;
+}
+
+/* Sweeping arc */
+.spinner::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--sp-thickness) / -2);
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: var(--sp-thickness) solid transparent;
+  border-top-color: var(--sp-color);
+  border-right-color: var(--sp-color);
+  animation: spinner-rotate var(--sp-speed) linear infinite;
+}
+
+@keyframes spinner-rotate {
+  to {
+    transform: rotate(360deg);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  .spinner::after {
+    animation-duration: 2s;
+  }
 }
