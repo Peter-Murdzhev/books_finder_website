@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://books-hunter-web.vercel.app/sitemap.xml

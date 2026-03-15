@@ -1,1 +1,1 @@
-A website where you can find information about most books worldwide
+A website for searching any books worldwide. You can find information about any book you want. On the homepage you receive a list with the new york times bestsellers. You can create an acount and keep a list of your favourite books. The system estimates user preferred genres and recommends books for you. 
