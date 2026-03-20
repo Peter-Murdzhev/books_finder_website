@@ -13,19 +13,27 @@ import { useEffect, useState } from "react";
 //no endpoint to fetch multiple books of type works at once
 const FavouriteBooksBrowserUI = () => {
     const { user } = useAuth();
-    const [page, setPage] = useState(()=>{
+    const [page, setPage] = useState(() => {
         const temp = sessionStorage.getItem("page");
-        if(temp){
+        if (temp) {
             return Number(temp);
         }
 
         return 1;
     });
-    const [pagesCount, setPagesCount] = useState(1);
+    const [pagesCount, setPagesCount] = useState(()=>{
+        const count = sessionStorage.getItem("pages_count");
 
-    useEffect(()=>{
+        if(count){
+            return Number(count);
+        }
+
+        return 1;
+    });
+
+    useEffect(() => {
         sessionStorage.setItem("page", page.toString());
-    },[page])
+    }, [page])
 
     const { data: books = [], isLoading } = useQuery({
         queryKey: ["favourites", user?.id, page],
@@ -45,7 +53,12 @@ const FavouriteBooksBrowserUI = () => {
             }
 
             const ids = data?.[0]?.favourite_books_ids ?? [];
-            setPagesCount(Math.ceil(ids?.length / 10));
+
+            const pagesCounter = Math.ceil(ids?.length / 10);
+            if (pagesCounter > 1) {
+                setPagesCount(pagesCounter);
+                sessionStorage.setItem("pages_count", String(pagesCounter));
+            }
 
             const start = (page - 1) * 10;
             const favIds = ids.slice(start, start + 10);

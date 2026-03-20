@@ -7,21 +7,33 @@ export const findAuthorsByName = async (prevState: any, formData: FormData) => {
         const queryForName = await fetch(`https://openlibrary.org/search.json?author=${name}`);
         const responseForName = await queryForName.json();
 
-        const authorId = responseForName.docs[0].author_key;
+        const authorId = responseForName.docs?.[0]?.author_key;
+
+        if(!authorId){
+            return{
+                success: true,
+                message: "author not found",
+                author: null,
+                loading: false
+            }
+        }
+       
         const authorQuery = await fetch(`https://openlibrary.org/authors/${authorId}.json`);
         const data = await authorQuery.json();
 
         return {
             success: true,
             message: "author fetched",
-            author: data
+            author: data,
+            loading: false
         }
     } catch (error) {
         return {
             success: false,
             message: error instanceof Error ?
                 error.message : "Error fetching  author",
-            author: null
+            author: null,
+            loading: false
         }
     }
 
