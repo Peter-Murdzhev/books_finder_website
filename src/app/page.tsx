@@ -22,7 +22,7 @@ export default async function Home() {
 
         <div className="relative">
           <img src="/various_books.jpg" className="w-[640px] h-[140px] md:h-[180px] rounded"></img>
-          <h1 className="absolute z-10 top-5 left-11 md:left-42 text-2xl md:text-4xl text-white filter drop-shadow-[0_0_10px_rgba(138,43,226,1)] cursor-default">
+          <h1 className="absolute z-10 top-5 left-16 md:left-42 text-2xl md:text-4xl text-white filter drop-shadow-[0_0_10px_rgba(138,43,226,1)] cursor-default">
             Find any book here</h1>
         </div>
 

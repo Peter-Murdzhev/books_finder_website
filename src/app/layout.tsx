@@ -41,9 +41,9 @@ export default function RootLayout({
             <ScrollRestoration />
             <Navbar />
             {children}
+            <Footer />
           </ReactQueryProvider>
         </AuthProvider>
-        <Footer />
       </body>
     </html>
   );

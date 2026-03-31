@@ -21,10 +21,10 @@ const FavouriteBooksBrowserUI = () => {
 
         return 1;
     });
-    const [pagesCount, setPagesCount] = useState(()=>{
+    const [pagesCount, setPagesCount] = useState(() => {
         const count = sessionStorage.getItem("pages_count");
 
-        if(count){
+        if (count) {
             return Number(count);
         }
 
@@ -54,14 +54,14 @@ const FavouriteBooksBrowserUI = () => {
 
             const ids = data?.[0]?.favourite_books_ids ?? [];
 
-            const pagesCounter = Math.ceil(ids?.length / 10);
+            const pagesCounter = Math.ceil(ids?.length / 6);
             if (pagesCounter > 1) {
                 setPagesCount(pagesCounter);
                 sessionStorage.setItem("pages_count", String(pagesCounter));
             }
 
-            const start = (page - 1) * 10;
-            const favIds = ids.slice(start, start + 10);
+            const start = (page - 1) * 6;
+            const favIds = ids.slice(start, start + 6);
 
             const response = await findUserFavouriteBooks(favIds);
             const authorsData = await fetchAuthors(response);
@@ -101,7 +101,11 @@ const FavouriteBooksBrowserUI = () => {
                     {Array.from({ length: pagesCount }, (_, index) => (
                         <button
                             key={index}
-                            onClick={() => setPage(index + 1)}
+                            onClick={() => {
+                                setPage(index + 1);
+                                setTimeout(() => window.scrollTo(0, 0), 1000);
+                            }
+                            }
                             className={`px-3 py-1 border rounded cursor-pointer ${page === index + 1 ? "bg-cyan-700 text-white" : ""
                                 }`}
                         >{index + 1}

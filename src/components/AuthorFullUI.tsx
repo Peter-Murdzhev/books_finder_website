@@ -46,7 +46,8 @@ const AuthorFullUI = ({ author }: { author: any }) => {
 
         <section className="mt-3 pb-10 border-b-2 md:pb-0 md:border-b-0 md:pr-15 md:border-r border-cyan-700">
           <img className="w-[350px] h-[320px] md:w-[300px] md:h-[350px]"
-            src={`https://covers.openlibrary.org/a/id/${author.photos?.[0]}-L.jpg`}></img>
+            src={author.photos ? `https://covers.openlibrary.org/a/id/${author.photos?.[0]}-L.jpg` :
+            "/author_sitting_on_books.jpg"}></img>
 
         </section>
 
