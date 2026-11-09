@@ -141,8 +141,8 @@ const BookFullUI = ({ book, author, cover }: { book: any, author: Author, cover:
         <div className="min-h-screen md:w-[90%] mx-auto p-10 m-2">
             <div className="flex flex-col md:flex-row gap-15 pb-7 border-b-3 border-cyan-700">
                 <section className="flex flex-col items-center gap-5 mt-3 pb-10 border-b-3 md:pb-0 md:border-b-0 md:px-6 md:py-2 md:pr-15 md:border-r border-cyan-700">
-                    <img className="w-full h-[350px] md:w-[300px] md:h-[400px]"
-                        src={cover}></img>
+                    <img className="w-full h-[350px] md:w-[300px] md:h-[400px] object-cover"
+                        src={!cover.includes("undefined") ? cover : "/realistic-old-book-blue.jpg"}></img>
 
                     <div className="flex gap-1 items-center bg-cyan-400 px-3 py-3 rounded-lg cursor-pointer"
                         onClick={toggleFavourite}>
@@ -162,7 +162,7 @@ const BookFullUI = ({ book, author, cover }: { book: any, author: Author, cover:
             </div>
 
             <section>
-                {book.subjects &&
+                {book?.subjects &&
                     <div className="flex flex-wrap text-[13px] md:text-[15px] p-4 mt-5 border border-cyan-700 justify-center items-center rounded-lg">
                         <p className="text-cyan-500 text-l">Subjects:</p>
                         {book.subjects?.slice(0, 10).map((subject: Subject, index: number) => (
@@ -172,7 +172,7 @@ const BookFullUI = ({ book, author, cover }: { book: any, author: Author, cover:
                     </div>
                 }
 
-                {book.subject_people &&
+                {book?.subject_people &&
                     <div className="flex flex-wrap text-[13px] md:text-[15px] p-4 mt-5 border border-cyan-700 justify-center items-center rounded-lg">
                         <p className="text-cyan-500 text-l">Heroes:</p>
                         {book.subject_people?.slice(0, 10).map((person: string, index: number) => (
@@ -182,7 +182,7 @@ const BookFullUI = ({ book, author, cover }: { book: any, author: Author, cover:
                     </div>
                 }
 
-                {book.subject_places &&
+                {book?.subject_places &&
                     <div className="flex flex-wrap text-[13px] md:text-[15px] p-4 mt-5 border border-cyan-700 justify-center items-center rounded-lg">
                         <p className="text-cyan-500 text-l">Places:</p>
                         {book.subject_places?.slice(0, 10).map((place: string, index: number) => (
@@ -192,7 +192,7 @@ const BookFullUI = ({ book, author, cover }: { book: any, author: Author, cover:
                     </div>
                 }
 
-                {book.subject_times &&
+                {book?.subject_times &&
                     <div className="flex flex-wrap text-[13px] md:text-[15px] p-4 mt-5 border border-cyan-700 justify-center items-center rounded-lg">
                         <p className="text-cyan-500 text-l">Times:</p>
                         {book.subject_times?.slice(0, 10).map((time: string, index: number) => (
@@ -207,7 +207,7 @@ const BookFullUI = ({ book, author, cover }: { book: any, author: Author, cover:
 }
 
 function getSubjectName(subject: Subject) {
-    return typeof subject === "string" ? subject : subject.value;
+    return typeof subject === "string" ? subject : subject?.value;
 }
 
 export default BookFullUI;

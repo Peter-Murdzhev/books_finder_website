@@ -11,10 +11,10 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const decodedId = decodeURIComponent(id);
   const book = await findBookById(decodedId);
 
-  const workId = id.includes("books") ? book.works[0].key : "";
+  const workId = id.includes("books") ? book?.works?.[0]?.key : "";
   let workTypeBook = null;
 
-  if (workId.length > 0) {
+  if (workId?.length > 0) {
     workTypeBook = await findBookById(workId);
   }
 
@@ -26,8 +26,8 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   //sometimes book API has cover and work API doesn't
   //so the book API is set first.
   //Book API provides whole URL. Work API provides just the image Id.
-  const cover:string = book?.cover?.large ? book.cover?.large :
-    `https://covers.openlibrary.org/w/id/${book.covers?.[0]}-L.jpg`;
+  const cover:string = book?.cover?.large ? book?.cover?.large :
+    `https://covers.openlibrary.org/w/id/${book?.covers?.[0]}-L.jpg`;
 
   return (
     <div>

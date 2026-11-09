@@ -7,6 +7,7 @@ import { fetchAuthors } from "@/actions/author-actions";
 import Spinner from "./Spinner";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import Pagination from "./Pagination";
 
 //initially it loads slow because the books api doesn't contain authorName
 //so I have to fetch books first then the authors one by one
@@ -86,33 +87,37 @@ const FavouriteBooksBrowserUI = () => {
             <h1 className="text-2xl md:text-3xl text-cyan-700 text-center underline my-10">Favourites</h1>
             {books.length === 0 && isLoading && <Spinner className="absolute" size={50} thickness={3} color="#0e7490" />}
 
-            <section className="grid grid-cols-1 md:grid-cols-2 place-items-center gap-2 mt-5">
+            <section className={`grid grid-cols-1 md:grid-cols-2 place-items-center gap-2 mt-5 `}>
                 {
                     mappedBooks.length > 0 ?
                         mappedBooks.map((book, index) => <BookCard key={index} book={book} />) :
                         (!isLoading &&
-                            <h1 className="text-xl text-cyan-700 col-[1/-1] mt-20">You don't have favourite books yet.</h1>
+                            <h1 className="text-xl text-cyan-700 col-[1/-1] mt-20">
+                                You don't have favourite books yet.</h1>
                         )
                 }
+
             </section>
 
             {books.length !== 0 && pagesCount > 1 &&
-                <div className="flex gap-2 self-center mt-7 mb-10">
-                    {Array.from({ length: pagesCount }, (_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => {
-                                setPage(index + 1);
-                                setTimeout(() => window.scrollTo(0, 0), 1000);
-                            }
-                            }
-                            className={`px-3 py-1 border rounded cursor-pointer ${page === index + 1 ? "bg-cyan-700 text-white" : ""
-                                }`}
-                        >{index + 1}
-                        </button>
-                    ))
-                    }
-                </div>
+                // <div className="flex gap-2 self-center mt-7 mb-10">
+                //     {Array.from({ length: pagesCount }, (_, index) => (
+                //         <button
+                //             key={index}
+                //             onClick={() => {
+                //                 setPage(index + 1);
+                //                 setTimeout(() => window.scrollTo(0, 0), 1000);
+                //             }
+                //             }
+                //             className={`px-3 py-1 border rounded cursor-pointer ${page === index + 1 ? "bg-cyan-700 text-white" : ""
+                //                 }`}
+                //         >{index + 1}
+                //         </button>
+                //     ))
+                //     }
+                // </div>
+                <Pagination currentPage={page} totalPages={pagesCount}
+                totalItems={mappedBooks.length} setPage={setPage}/>
             }
         </div >
     )

@@ -13,7 +13,7 @@ const BookCard = ({ book }: { book: Book }) => {
 
   return (
     <div className="flex gap-4 bg-[url('/blank_book.jpg')] bg-cover bg-center w-[310px] md:w-[340px] h-[232px] mb-5 md:mr-3 md:overflow-hidden">
-      <img src={book.cover} className="mt-1 ml-1 w-[150px] md:w-[165px] h-[225px] object-cover"></img>
+      <img src={!book.cover.includes("undefined") ? book.cover : "/realistic-old-book-blue.jpg"} className="mt-1 ml-1 w-[150px] md:w-[165px] h-[225px] object-cover"></img>
 
       <div className="flex flex-col items-center justify-around text-center p-6">
         <p className="font-semibold text-[12px] md:text-[14px]  overflow-hidden text-ellipsis whitespace-wrap">{book?.title?.length < 50 ? book?.title : book?.title?.slice(0,50).concat("...")}</p>
