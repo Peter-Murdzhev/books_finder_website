@@ -43,7 +43,11 @@ export const findUserFavouriteBooks = async (bookIds: string[]) => {
 
     const books = await Promise.all(bookIds
         .map(async (id: string) => {
-            const response = await fetch(`https://openlibrary.org/${id}.json`);
+            const response = await fetch(`https://openlibrary.org/${id}.json`,{
+                headers: {
+                    "User-Agent" : "BooksHunter (murdzhevpetar@gmail.com)"
+                }
+            });
             const data = await response.json();
             return data;
         }));
@@ -57,7 +61,7 @@ export const findUserRecommendedBooks = async (category: string)=> {
         return;
     }
 
-    const response = await fetch(`https://openlibrary.org/subjects/${category}.json?limit=200`)
+    const response = await fetch(`https://openlibrary.org/subjects/${category}.json?limit=300`)
     const data = await response.json();
 
     const filteredBooks = data?.works?.filter((book : any) => book.cover_id);

@@ -24,7 +24,6 @@ const FavouriteBooksBrowserUI = () => {
     });
     const [pagesCount, setPagesCount] = useState(() => {
         const count = sessionStorage.getItem("pages_count");
-
         if (count) {
             return Number(count);
         }
@@ -32,11 +31,20 @@ const FavouriteBooksBrowserUI = () => {
         return 1;
     });
 
+    const [isPageLoaded, setIsPageLoaded] = useState<boolean[]>(() => {
+        const loaded = sessionStorage.getItem("pages_loaded");
+        if (loaded) {
+            return JSON.parse(loaded) as boolean[];
+        }
+
+        return Array.from({ length: pagesCount }, () => false);
+    });
+
     useEffect(() => {
         sessionStorage.setItem("page", page.toString());
     }, [page])
 
-    const { data: books = [], isLoading } = useQuery({
+    const { data: books = [], isLoading, isFetching } = useQuery({
         queryKey: ["favourites", user?.id, page],
         queryFn: async () => {
             if (!user) {
@@ -75,12 +83,31 @@ const FavouriteBooksBrowserUI = () => {
         enabled: !!user,
         placeholderData: keepPreviousData,
         gcTime: 1000 * 60 * 60 * 12,
+        // staleTime: 1000 * 60,
         // refetchOnMount: false,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
     });
 
+    useEffect(() => {
+        if (!isFetching && books) {
+            setIsPageLoaded(prev => {
+                if (prev[page - 1] === true) {
+                    return prev;
+                }
+                const next = [...prev];
+                next[page - 1] = true;
+                return next;
+            });
+        }
+    }, [isFetching, books, page]);
+
+    useEffect(() => {
+        sessionStorage.setItem("pages_loaded", JSON.stringify(isPageLoaded))
+    }, [isPageLoaded])
+
     const mappedBooks = books.map(mapBookToCard) ?? [];
+    const blurBooks = !isPageLoaded[page - 1] && isFetching;
 
     return (
         <div className="relative min-h-100 mx-auto flex flex-col">
@@ -90,7 +117,7 @@ const FavouriteBooksBrowserUI = () => {
             <section className={`grid grid-cols-1 md:grid-cols-2 place-items-center gap-2 mt-5 `}>
                 {
                     mappedBooks.length > 0 ?
-                        mappedBooks.map((book, index) => <BookCard key={index} book={book} />) :
+                        mappedBooks.map((book, index) => <BookCard key={index} book={book} loading={blurBooks} />) :
                         (!isLoading &&
                             <h1 className="text-xl text-cyan-700 col-[1/-1] mt-20">
                                 You don't have favourite books yet.</h1>
@@ -117,7 +144,7 @@ const FavouriteBooksBrowserUI = () => {
                 //     }
                 // </div>
                 <Pagination currentPage={page} totalPages={pagesCount}
-                totalItems={mappedBooks.length} setPage={setPage}/>
+                    totalItems={mappedBooks.length} setPage={setPage} />
             }
         </div >
     )
