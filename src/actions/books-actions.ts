@@ -1,6 +1,7 @@
 "use server"
 
 import { shuffleArray } from "@/utils/fisher_yates_shuffle";
+import {cache} from "react"
 
 export const findBooksByTitle = async (prevState: any, formData: FormData) => {
     try {
@@ -25,7 +26,7 @@ export const findBooksByTitle = async (prevState: any, formData: FormData) => {
     }
 }
 
-export const findBookById = async (id: string) => {
+export const findBookById = cache(async (id: string) => {
     try {
         const response = await fetch(`https://openlibrary.org/${id}.json`);
         const data = await response.json();
@@ -34,7 +35,7 @@ export const findBookById = async (id: string) => {
     } catch (error) {
         error instanceof Error ? console.log(error.message) : console.log("error fetching book");
     }
-}
+})
 
 export const findUserFavouriteBooks = async (bookIds: string[]) => {
     if (!bookIds || !Array.isArray(bookIds) || bookIds.length === 0) {
@@ -43,11 +44,7 @@ export const findUserFavouriteBooks = async (bookIds: string[]) => {
 
     const books = await Promise.all(bookIds
         .map(async (id: string) => {
-            const response = await fetch(`https://openlibrary.org/${id}.json`,{
-                headers: {
-                    "User-Agent" : "BooksHunter (murdzhevpetar@gmail.com)"
-                }
-            });
+            const response = await fetch(`https://openlibrary.org/${id}.json`);
             const data = await response.json();
             return data;
         }));

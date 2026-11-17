@@ -1,6 +1,55 @@
 import { findAuthorById } from "@/actions/author-actions";
 import { findBookById } from "@/actions/books-actions";
 import BookFullUI from "@/components/BookFullUI";
+import type { Metadata } from "next";
+
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
+  const { id } = await params;
+  const book = await findBookById(id);
+
+  if (!book) {
+    return {
+      title: "Book Not Found",
+      robots: {
+        index: false,
+        follow: true,
+      },
+    };
+  }
+
+  const canonical = `/books/${id}`;
+
+  return {
+    alternates: {
+      canonical,
+    },
+
+    openGraph: {
+      type: "book" as "website",
+      siteName: "Books Hunter",
+      title: `${book.title} | Books Hunter`,
+      description: `Discover ${book.title} on Books Hunter. Explore book details and publication information.`,
+      url: canonical,
+      images: book.cover ? [book.cover] : [],
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+      },
+    },
+  };
+}
 
 //Open library books is really inconsistent
 //In some cases returns books edition other times work edition.

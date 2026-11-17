@@ -62,11 +62,7 @@ export const fetchAuthors = async (books: any[]) => {
 
     const authors = await Promise.all(
         Array.from(authorKeys).map(async (key) => {
-            const response = await fetch(`https://openlibrary.org${key}.json`,{
-                headers: {
-                    "User-Agent" : "BooksHunter (murdzhevpetar@gmail.com)"
-                }
-            });
+            const response = await fetch(`https://openlibrary.org${key}.json`);
             return response.json();
         })
     );

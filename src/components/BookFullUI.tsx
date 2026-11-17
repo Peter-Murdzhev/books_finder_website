@@ -152,7 +152,7 @@ const BookFullUI = ({ book, author, cover }: { book: any, author: Author, cover:
                 </section>
 
                 <section className="md:w-[60%] flex flex-col gap-5 md:mt-2">
-                    <p className="text-2xl md:text-3xl font-semibold">{book.title}</p>
+                    <h1 className="text-2xl md:text-3xl font-semibold">{book.title}</h1>
                     <p className="md:ml-5">by <span
                         className="underline text-[14px] md:text-[16px] text-blue-600 cursor-pointer"
                         onClick={() => router.push(`/authors/${encodeURIComponent(author?.key)}`)}>{author?.name}</span>

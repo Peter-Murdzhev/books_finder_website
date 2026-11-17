@@ -18,8 +18,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Book Library",
-  description: "Book library where you can find information about any book you want.",
+  metadataBase: new URL("https://books-hunter-web.vercel.app/"),
+
+  title: "Books hunter",
+  description: "Book library where you can find information about any book.",
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
 };
 
 export default function RootLayout({
