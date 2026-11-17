@@ -34,6 +34,10 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+
+  verification:{
+    google: "nwcTlwQsUrdPqxDnLlag1nWxqjgFilg8ZBXfSLvo9Uo"
+  }
 };
 
 export default function RootLayout({
